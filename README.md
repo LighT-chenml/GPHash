@@ -46,6 +46,6 @@ Please refer to the following list to set the arguments:
 | `workload_path` | The path to the workload file (ignored the .load/.run suffix) |
 | `num_load_ops` | The number of operations in load phase |
 | `num_run_ops` | The number of operations in run phase|
-| `log_batch_size` | The logarithm of the batch size (e.g., set this parameter to 12 indicates the batch size is 4096) |
-| `init_level` | The logarithm of the number of buckets in initial bottom level (e.g., set this parameter to 12 indicates the initial bottom level contains 4096 buckets) |
-| `cache_rate` | The proportion of cached buckets in all buckets (e.g., set this parameter to 0.2 indicates 20% buckets are cached) |
+| `log_batch_size` | The logarithm of the batch size (e.g., set this argument to 12 indicates the batch size is 4096) |
+| `init_level` | The logarithm of the number of buckets in initial bottom level (e.g., set this argument to 12 indicates the initial bottom level contains 4096 buckets) |
+| `cache_rate` | The proportion of cached buckets in all buckets (e.g., set this argument to 0.2 indicates 20% buckets are cached) |
