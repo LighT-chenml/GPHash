@@ -35,7 +35,7 @@ make
 ## Run
 The basic structure for a running command is:
 ```
-PMEM_MMAP_HINT=7fab00000000 ./ycsb_bench <pm_file_path> <workload_path> <num_load_ops> <num_run_ops> <log_batch_size> <init_level> <cache_rate>
+PMEM_MMAP_HINT=7fab00000000 ./ycsb_bench <pm_file_path> <workload_path> <num_load_ops> <num_run_ops> <log_batch_size> <init_level> <cache_size>
 ```
 
 Please refer to the following list to set the arguments:
@@ -48,4 +48,4 @@ Please refer to the following list to set the arguments:
 | `num_run_ops` | The number of operations in run phase|
 | `log_batch_size` | The logarithm of the batch size (e.g., set this argument to 12 indicates the batch size is 4096) |
 | `init_level` | The logarithm of the number of buckets in initial bottom level (e.g., set this argument to 12 indicates the initial bottom level contains 4096 buckets) |
-| `cache_rate` | The proportion of cached buckets in all buckets (e.g., set this argument to 0.2 indicates 20% buckets are cached) |
+| `cache_size` | The proportion of cached buckets in all buckets (e.g., set this argument to 0.2 indicates 20% buckets are cached) |
