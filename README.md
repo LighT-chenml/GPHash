@@ -2,8 +2,7 @@
 This is an open source repository for our paper
 
 > **GPHash: An Efficient Hash Index for GPU with Persistent Memory**
-> 
-> Menglei Chen, Yu Hua, Zhangyu Chen, Ming Zhang, Gen Dong. *Huazhong University of Science and Technology*
+>
 
 ## Brief Introduction
 
