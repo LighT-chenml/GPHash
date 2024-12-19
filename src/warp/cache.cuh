@@ -17,7 +17,7 @@ GPHashContext::fetchBucket(bool &ongoing,
 #ifdef ASYNC_LOADING
     int cnt = 0;
 RE_FETCH:
-    if (getCachedBucketRef(cached_pos) != 0) // wait for old cached bucket is not used
+    if (getCachedBucketRef(cached_pos) != 0) // waiting for the old cached bucket to be unused
     {
         if (++cnt < 5)
         {

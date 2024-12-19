@@ -48,10 +48,8 @@ static constexpr uint32_t NUM_SLOT_PER_GROUP = GROUP_SIZE * NUM_SLOT;
 
 static constexpr uint64_t NUM_VALUE = (1LL << 24) + (1 << 26);
 
-// the values larger than mod can be used
 static constexpr uint64_t EMPTY_KEY_64 = 0xFFFFFFFFFFFFFFFFLL;
 static constexpr uint64_t INSERTING_64 = 0xFFFFFFFFFFFFFFFELL;
-
 static constexpr uint32_t NOT_CACHED = 0xFFFFFFFF;
 
 class GPHashContext
@@ -243,11 +241,14 @@ public:
 
 	__device__ __forceinline__ void addBucketExp(uint32_t level, uint32_t bucket, uint32_t hit_bitmap)
 	{
-		uint32_t exp = 1; // LFU
-		// uint32_t exp = clock(); // LRU
-
-		atomicAdd(bucket_exp_[level] + bucket, exp); // LFU
-		// atomicMax(bucket_exp_[level] + bucket, exp); // LRU
+#ifdef LFU_CACHE
+		uint32_t exp = 1;
+		atomicAdd(bucket_exp_[level] + bucket, exp);
+#endif
+#ifdef LRU_CACHE
+		uint32_t exp = clock();
+		atomicMax(bucket_exp_[level] + bucket, exp);
+#endif
 	}
 
 	__device__ __forceinline__ void addBucketHit(uint32_t level, uint32_t bucket)
@@ -400,6 +401,11 @@ public:
 
 	GPHash(bool recovery, void *pm_base, uint32_t &level, uint32_t device_idx)
 	{
+		// get CLOCK_RATE
+        // clock_t clock_rate = prop.clockRate;
+        // printf("%u\n", clock_rate);
+        // printf("%s\n", prop.name);
+
 		device_idx_ = device_idx;
 
 		uint64_t is_resizing = 0; // if resizing, level is temp_level's level

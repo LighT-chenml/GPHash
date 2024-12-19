@@ -1,3 +1,4 @@
+# Enable the following compilation flags in order
 # -DWARP_COOPERATE
 # -DINPLACE_KEY
 # -DENABLE_CACHE

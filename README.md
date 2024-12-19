@@ -1,8 +1,9 @@
 # GPHash
-This is an open source repository for our paper
+This is an open source repository for our paper in [FAST 2025](https://www.usenix.org/conference/fast25)
 
 > **GPHash: An Efficient Hash Index for GPU with Persistent Memory**
 >
+> Menglei Chen, Yu Hua, Zhangyu Chen, Ming Zhang, Gen Dong. *Huazhong University of Science and Technology*
 
 ## Brief Introduction
 

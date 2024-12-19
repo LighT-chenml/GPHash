@@ -139,8 +139,6 @@ GPHashContext::search8Byte(bool &ongoing,
 
     bool ret = true;
 
-    // printf("%lu %lu\n", (uint64_t)my_key, (uint64_t)my_value);
-
     while ((work_queue = __ballot_sync(0xFFFFFFFF, ongoing)))
     {
 

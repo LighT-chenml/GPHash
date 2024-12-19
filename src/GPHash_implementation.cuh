@@ -48,8 +48,9 @@ void GPHash::constructCache(uint32_t cache_size)
     uint32_t *cached_bucket_id = nullptr;
     uint32_t *d_cached_bucket_level = nullptr;
     uint32_t *d_cached_bucket_id = nullptr;
-    if (cache_size != cache_size_) // assume new cache_size > 0
+    if (cache_size != cache_size_) // after resizing
     {
+        // assume new cache size (i.e., cache_size) > 0
         CHECK_CUDA_ERROR(cudaMalloc((void **)&cache_ptr, cache_size * BUCKET_SIZE));
         CHECK_CUDA_ERROR(cudaMemset(cache_ptr, 0xFF, cache_size * BUCKET_SIZE));
         CHECK_CUDA_ERROR(cudaMalloc((void **)&cache_ref, cache_size * sizeof(uint32_t)));
@@ -119,9 +120,11 @@ void GPHash::constructCache(uint32_t cache_size)
             A.push_back(a);
         }
     }
-
-    // random_shuffle(A.begin(), A.end());
+#ifdef RANDOM_CACHE
+    random_shuffle(A.begin(), A.end());
+#else
     nth_element(A.begin(), A.begin() + cache_size_, A.end());
+#endif
 
     for (int i = 0; i < cache_size_; ++i)
     {
@@ -140,10 +143,6 @@ void GPHash::fetchBuckets()
 {
     cudaDeviceProp prop;
     cudaGetDeviceProperties(&prop, 0);
-
-    // clock_t clock_rate = prop.clockRate;
-    // printf("%u\n", clock_rate);
-    // printf("%s\n", prop.name);
 
     if (!prop.deviceOverlap)
     {

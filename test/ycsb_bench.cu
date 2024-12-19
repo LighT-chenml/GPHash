@@ -11,13 +11,13 @@ using namespace std;
 uint32_t reload_interval = (1 << 22);
 uint32_t batch_size = (1 << 12);
 uint32_t ini_level = 12;
-double cache_size_rate = 0.25;
+double cache_size = 0.2;
 
 int main(int argc, char *argv[])
 {
     if (argc < 8)
     {
-        printf("Usage:  %s  pm_file input_file num_load num_run log_batch_size ini_level cache_size_rate\n", argv[0]);
+        printf("Usage:  %s  pm_file input_file num_load num_run log_batch_size ini_level cache_size\n", argv[0]);
         exit(1);
     }
 
@@ -29,12 +29,12 @@ int main(int argc, char *argv[])
     uint32_t num_run = atoi(argv[4]);
     batch_size = 1 << atoi(argv[5]);
     ini_level = atoi(argv[6]);
-    cache_size_rate = atof(argv[7]);
+    cache_size = atof(argv[7]);
 
     printf("batch_size = %u\n", batch_size);
     printf("KEY_SIZE = %u\n", KEY_SIZE);
     printf("ini_level = %u\n", ini_level);
-    printf("cache_size_rate = %.3lf\n", cache_size_rate);
+    printf("cache_size = %.3lf\n", cache_size);
 
     uint32_t *load_opts = new uint32_t[num_load];
     uint64_t *load_keys = new uint64_t[num_load * (KEY_SIZE / 8)];
@@ -133,7 +133,7 @@ int main(int argc, char *argv[])
     printf("turn off DDIO!\n");
 #endif
 
-    HashTable hash_table(pm_file, file_size, batch_size, ini_level, cache_size_rate, 0);
+    HashTable hash_table(pm_file, file_size, batch_size, ini_level, cache_size, 0);
 
     cout << "Start Loading" << endl;
 
@@ -224,26 +224,19 @@ int main(int argc, char *argv[])
         warmup_time += batch_time;
         batch_time = 0;
 
-#ifdef ENABLE_CACHE
         if ((num_batch - last_load_cache) * batch_size >= reload_interval)
         {
             hash_table.load_cache();
             last_load_cache = num_batch;
         }
-#endif
     }
 
     warmup_time *= 1000000;
     printf("%.3lf\tMops/sec\n", (num_keys / (warmup_time / 1000.0)));
     printf("%.3lf\tmsec\n", sum_batch_time / num_batch);
-#ifdef ENABLE_CACHE
     cout << "warmup hit rate: " << 1.0 * hash_table.hitCount() / num_keys / 32 << endl;
-#endif
-
     cout << "________________________________________________Finish Warmup!________________________________________________" << endl;
-#endif
 
-#ifdef ENABLE_CACHE
     hash_table.setValueOffset(num_load);
     hash_table.clearHit();
     hash_table.load_cache();

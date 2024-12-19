@@ -7,7 +7,6 @@ GPHashContext::insert(bool &ongoing,
                       uint64_t my_value_address,
                       uint32_t level)
 {
-    // uint32_t tid = threadIdx.x + blockIdx.x * blockDim.x;
     uint32_t work_queue = 0;
     uint32_t last_work_queue = 0;
     uint32_t src_lane = 0;
@@ -22,8 +21,6 @@ GPHashContext::insert(bool &ongoing,
     uint64_t target_fp = 0;
 
     bool ret = true;
-
-    // printf("%u %lu %lu\n", count, (uint64_t)my_key, (uint64_t)my_value_address);
 
     int count = 0;
 
@@ -193,7 +190,6 @@ GPHashContext::insert8Byte(bool &ongoing,
                            uint64_t my_value_address,
                            uint32_t level)
 {
-    // uint32_t tid = threadIdx.x + blockIdx.x * blockDim.x;
     uint32_t work_queue = 0;
     uint32_t last_work_queue = 0;
     uint32_t src_lane = 0;
@@ -353,7 +349,6 @@ GPHashContext::insertPerThread(bool &ongoing,
                                uint64_t my_value_address,
                                uint32_t level)
 {
-    // uint32_t tid = threadIdx.x + blockIdx.x * blockDim.x;
     uint64_t src_hash_value = 0;
     uint64_t *src_key_ptr = my_key;
     uint32_t related_level = (31 - lane_id) / NUM_SLOT_PER_GROUP;
@@ -441,7 +436,6 @@ RETRY_INSERT_PER_THREAD:
     }
     else
     {
-        // printf("%u dest_level=%u dest_bucket=%u dest_slot=%u %lu\n", lane_id, dest_level, dest_bucket, dest_slot, (uint64_t)*my_key);
         goto RETRY_INSERT_PER_THREAD;
     }
 
